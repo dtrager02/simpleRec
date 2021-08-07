@@ -38,7 +38,7 @@ def roundData():
 
 @app.route("/autocomplete/<term>")
 def autocomplete(term):
-    con = sqlite3.connect('../animeInfo.sqlite3')
+    con = sqlite3.connect('./animeInfo.sqlite3')
     cur = con.cursor()
     return utils.autocomplete(cur,term)
     
