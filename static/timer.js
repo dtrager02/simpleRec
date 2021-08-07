@@ -71,6 +71,9 @@ function onYouTubeIframeAPIReady() {
 
 function onPlayerReady(event) {
     $('#yt').hide();
+    event.target.mute();
+    event.target.unMute();
+    event.target.playVideo();
     updateScreen();
 }
 
