@@ -184,3 +184,6 @@ $('#guess').focusout(function() {
 
 //TODO hide answer HTML until it is ready to be shown (probably with a ) (so no inspector cheating) (probably in game object)
 //TODO implement highscore system with sessions
+//TODO add "report problem" feature with database and view
+//TODO center everything properly (search bar especially)
+//make answer accept english as well
