@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess The OP</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+</head>
+
+<body>
+    <h1>Welcome! Select your options and Press Start</h1>
+    <p>How it works: Based on your difficulty level, the app will select a set of random animes that are a certain popularity. For example, Easy Mode will select animes with over 70k hits in the database, while hard mode will select animes with less than
+        5k hits. Then, the app will asynchronously scrape each anime's opening song off MAL, and start the game</p>
+
+    <div class="options">
+        <form action="/start" method="POST">
+            <label for="diff">Choose a difficulty:</label>
+            <select name="diff" id="diff">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+            <br>
+            <label for="num">Choose how many rounds:</label>
+            <input type="number" id="num" name="num" max="25">
+            <br>
+            <button>Submit</button>
+        </form>
+    </div>
+
+</body>
+
+</html>

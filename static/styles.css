@@ -1,0 +1,15 @@
+body {
+    text-align: center;
+    font-family: sans-serif;
+}
+
+p {
+    margin: 0 100px 0 100px;
+}
+
+.options {
+    background-color: rgb(205, 218, 231);
+    width: 500px;
+    margin: 50px 0 0 0;
+    display: inline-block;
+}

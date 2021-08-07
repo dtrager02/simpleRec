@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess The OP</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='game.css')}}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="main">
+        <h1 class="round-num">Round 1</h1>
+        <p class="points">Points: 0</p>
+        <button style="margin: 10px 10px 10px 10px;" class="quit"><a href="/">Quit</a></button>
+        <div class="timer">
+            <div class="slide"><span></span></div>
+            <p class="timer-text">60</p>
+        </div>
+        <div class="player">
+            <!-- <div data-video="Ua5UARWRYLA" data-autoplay="1" data-loop="1" id="youtube-audio">
+        </div>
+        <script src="https://www.youtube.com/iframe_api"></script>
+        <script src="https://cdn.rawgit.com/labnol/files/master/yt.js"></script> -->
+
+            <div id="yt" style="display: none;"></div>
+        </div>
+
+        <div class="input-guess">
+            <label for="guess">Guess:</label>
+            <span class="search-boxes">
+                    <input type="text" id="guess" name="guess">
+                    <span class="search-results">
+                        <div class="result" style="display: none;">
+                            <p>High school DxD</p>
+                        </div>
+                    </span>
+            </span>
+            <button class="submit1">Submit</button>
+            <img width="20" height="20" class="pause-button" src="{{url_for('static', filename='pause.png')}}">
+            <img width="20" height="20" class="mute-button" src="{{url_for('static', filename='mute.png')}}">
+        </div>
+        <div style="text-align: center; margin: 10px;">
+            <button class="give-up">Give Up This Round</button>
+        </div>
+    </div>
+    <div class="answer" style="display: none;">
+        <h1 class="status">Incorrect!</h1>
+        <img class="correct-img" src="https://cdn.myanimelist.net/images/anime/1843/115815.jpg">
+        <div>
+            <h2 class="song-title">Title</h2>
+            <p>from</p>
+            <h2 class="correct-title">Bokutachi No Remake</h2>
+        </div>
+
+        <button class="cont">Continue</button>
+    </div>
+</body>
+<script>
+    // console.log("done 1");
+    // start = () => {
+    //     var timer = 60;
+    //     var start1 = timer;
+    //     $('.player').html(`<div data-video="Ua5UARWRYLA" data-autoplay="1" data-loop="1" id="youtube-audio">
+    //     </div>`);
+
+    //     var interval = setInterval(function() {
+    //         timer--;
+    //         $('.slide').width(100 * timer / start1 + '%')
+    //         $('.timer p').text(timer);
+    //         if (timer === 0) clearInterval(interval);
+    //         if (timer % 10 === 0) {
+    //             console.log('changed');
+    //             // $('.player').html('');
+    //         }
+    //     }, 1000);
+    // }
+    // $('.start').click(start);
+</script>
+<script type=text/javascript src="{{url_for('static', filename='timer.js')}}"></script>
+
+</html>
