@@ -15,11 +15,12 @@ getRoundData = () => {
 };
 let interval = null;
 let game = {
+    gameOver: false,
     data: getRoundData(),
     round: -1,
     points: 0.0,
     timer: 90,
-    answer: $(`<div class="answer" style="display: none;">
+    answer: $(`<div class="answer">
     <h1 class="status">Incorrect!</h1>
     <img class="correct-img" src="https://cdn.myanimelist.net/images/anime/1843/115815.jpg">
     <div>
@@ -91,28 +92,28 @@ function onPlayerReady(event) {
 
 
 function updateScreen() {
-    $('.answer').hide();
     $('#guess').attr("placeholder", "");
     $('.123').remove();
+    $('.answer').remove();
     console.log("updated screen");
     let temp = game.nextRound();
     console.log(temp);
     if (temp) {
-        $('.correct-img').attr('src', temp[1]);
-        $('.correct-title').text(temp[0]);
-        $('.song-title').text(temp[3]);
+        game.answer.find('.correct-img').attr('src', temp[1]);
+        game.answer.find('.correct-title').text(temp[0]);
+        game.answer.find('.song-title').text(temp[3]);
         //makes assumption that player wants next song to play instantly
         player.loadVideoById(temp[2]);
         $('.round-num').text("Round: " + game.round);
         $('.points').text("Points: " + game.points);
-    } else {
-        $('.main').append(`<h1>Congratulations! You have earned ${game.points} points in ${game.round} rounds!</h1>`)
-            //TODO show difficulty level in here too for context
+    } else if (!game.gameOver) {
+        $('.main').append(`<h1>Congratulations! You have earned ${game.points} points in ${game.round} rounds!</h1>`);
+        //TODO show difficulty level in here too for context
     }
 }
 
 //$('.start').click(startTimer); //starts timer countdown
-$('.cont').click(function() {
+$('body').on("click", ".cont", function() {
     updateScreen();
 
 }); //hides overlay showing anime picture
@@ -153,6 +154,7 @@ $('#guess').on('input', function() {
         <p>${result}</p></div>`; }); //inserts div for each matching anime from database
             $('.search-results').html(results); //updates html
             $('.search-results').show(); //shows if it is hidden
+            console.log($('#guess').val());
         });
     } else {
         $('.search-results').hide(); //if empty query, hide search results just in case
@@ -161,7 +163,7 @@ $('#guess').on('input', function() {
 
 $('.submit1').click(function() {
     console.log("submitted");
-    if ($('#guess').val() == game.data[game.round][0]) {
+    if ($('#guess').val() == game.data[game.round][0] || $('#guess').val() == game.data[game.round][4]) {
         game.points += parseInt(parseFloat(game.timer) * parseFloat(10) / parseFloat(9));
         displayAnswer("Correct!");
     } else {
@@ -177,14 +179,14 @@ $('.search-results').on("click", '.result', function() {
 });
 
 function displayAnswer(status) {
-    if ($('.answer').css('display') == 'none') {
-        $('.answer').show();
+    if (!$('.answer').length) {
+        game.answer.find('.status').text(status);
+        $('body').append(game.answer);
         $('.main').append(`<div class="123 blur"></div>`);
-        $('.status').text(status);
     }
 }
+
 $('.give-up').click(function() {
-    console.log($('.answer').css('display'));
     displayAnswer("Gave up :(")
 });
 
@@ -193,7 +195,7 @@ $('#guess').focusout(function() {
     $('.search-results').hide(); //hide results if not focusses (like every search engine)
 });
 
-//TODO hide answer HTML until it is ready to be shown (probably with a ) (so no inspector cheating) (probably in game object)
+//DONE NICELY hide answer HTML until it is ready to be shown (probably with a ) (so no inspector cheating) (probably in game object)
 //TODO implement highscore system with sessions
 //TODO add "report problem" feature with database and view
 //TODO center everything properly (search bar especially)
