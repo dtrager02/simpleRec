@@ -108,6 +108,8 @@ function updateScreen() {
         $('.points').text("Points: " + game.points);
     } else if (!game.gameOver) {
         $('.main').append(`<h1>Congratulations! You have earned ${game.points} points in ${game.round} rounds!</h1>`);
+        game.gameOver = true;
+        if (interval) { clearInterval(interval) };
         //TODO show difficulty level in here too for context
     }
 }
