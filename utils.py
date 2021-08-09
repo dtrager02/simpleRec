@@ -7,11 +7,11 @@ import itertools
 
 def getAnimeQuery(num, diff):
     if diff == "easy":
-        return f"select anime_title,image_url,opening_song_ids,opening_titles,english_title from anime_info where occurances > 100000 and opening_song_ids not null order by random() limit {num}"
+        return f"select anime_title,image_url,opening_song_ids,opening_titles,english_title from anime_info where occurances > 50000 and opening_song_ids not null order by random() limit {num}"
     elif diff == "medium":
-        return f"select anime_title,image_url,opening_song_ids,opening_titles,english_title  from anime_info where occurances > 30000 and opening_song_ids not null order by random() limit {num}"
+        return f"select anime_title,image_url,opening_song_ids,opening_titles,english_title  from anime_info where occurances > 18000 and opening_song_ids not null order by random() limit {num}"
     else:
-        return f"select anime_title,image_url,opening_song_ids,opening_titles,english_title from anime_info where occurances < 30000 and occurances > 2000 and opening_song_ids not null order by random() limit {num}"
+        return f"select anime_title,image_url,opening_song_ids,opening_titles,english_title from anime_info where occurances < 18000 and occurances > 2000 and opening_song_ids not null order by random() limit {num}"
 
 def flatten_lists(the_lists):
     result = []

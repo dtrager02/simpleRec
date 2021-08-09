@@ -147,6 +147,7 @@ body {
     margin: 0 auto;
     background: none;
     border: 4px solid grey;
+    margin-right: 10px;
 }
 
 .timer p {

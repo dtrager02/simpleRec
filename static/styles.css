@@ -4,12 +4,12 @@ body {
 }
 
 p {
-    margin: 0 100px 0 100px;
+    margin: 0 10vw 0 10vw;
 }
 
 .options {
     background-color: rgb(205, 218, 231);
-    width: 500px;
     margin: 50px 0 0 0;
     display: inline-block;
+    padding: 5px 30px 5px 30px;
 }
