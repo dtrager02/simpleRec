@@ -24,6 +24,10 @@ def start():
         con = sqlite3.connect('./animeInfo.sqlite3')
         cur = con.cursor()
         print(request.form['diff'] + " " + request.form['num'])
+        if not(request.form['diff'] in {"easy","medium","hard"}) or not utils.RepresentsInt(request.form['num']):
+            print("bad form")
+            print(type(request.form['num']) is int)
+            return redirect('/')
         session['game_data'] = utils.queryProcessing(cur,request.form['num'],request.form['diff'])
         session.modified = True
         print(session.get('game_data'))

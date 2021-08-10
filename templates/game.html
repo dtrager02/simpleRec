@@ -29,7 +29,9 @@
         </div>
         <p style="margin-top: 10px;">Only titles spelled exactly correctly will be accepted <i>for now</i>. Use the autofill to help you</p>
         <div class="input-guess">
-            <label for="guess">Guess:</label>
+            <div class="input-guess-center">
+                <label for="guess">Guess:</label>
+            </div>
             <span class="search-boxes">
                     <input type="text" id="guess" name="guess">
                     <span class="search-results">
@@ -38,9 +40,12 @@
                         </div>
                     </span>
             </span>
-            <button class="submit1">Submit</button>
-            <img width="20" height="20" class="pause-button" src="{{url_for('static', filename='pause.png')}}">
-            <img width="20" height="20" class="mute-button" src="{{url_for('static', filename='mute.png')}}">
+            <div class="input-guess-center">
+                <button class="submit1">Submit</button></div>
+            <div class="input-guess-center">
+                <img width="20" height="20" class="pause-button " src="{{url_for('static', filename='pause.png')}}"></div>
+            <div class="input-guess-center">
+                <img width="20" height="20" class="mute-button " src="{{url_for('static', filename='mute.png')}}"></div>
         </div>
         <div style="text-align: center; margin: 10px;">
             <button class="give-up">Give Up This Round</button>

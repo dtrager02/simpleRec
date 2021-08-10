@@ -97,26 +97,29 @@ function updateScreen() {
     $('.answer').remove();
     console.log("updated screen");
     let temp = game.nextRound();
-    console.log(temp);
+    //console.log(temp);
     if (temp) {
         game.answer.find('.correct-img').attr('src', temp[1]);
         game.answer.find('.correct-title').text(temp[0]);
         game.answer.find('.song-title').text(temp[3]);
         //makes assumption that player wants next song to play instantly
         player.loadVideoById(temp[2]);
-        $('.round-num').text("Round: " + game.round);
+        $('.round-num').text("Round: " + (game.round + 1));
         $('.points').text("Points: " + game.points);
     } else if (!game.gameOver) {
         $('.main').append(`<h1>Congratulations! You have earned ${game.points} points in ${game.round} rounds!</h1>`);
         game.gameOver = true;
         if (interval) { clearInterval(interval) };
+        $('body').off(".continue");
+        $('.give-up').off();
         //TODO show difficulty level in here too for context
     }
 }
 
 //$('.start').click(startTimer); //starts timer countdown
-$('body').on("click", ".cont", function() {
+$('body').on("click.continue", ".cont", function() {
     updateScreen();
+    $('#guess').val("");
 
 }); //hides overlay showing anime picture
 //$('.quit').click(() => document.write($.get('/')));
@@ -127,9 +130,11 @@ $('.pause-button').click(function() {
     console.log(player);
     if (playerInfo["paused"]) {
         player.playVideo();
+        $('.pause-button').removeClass('selected-button')
         playerInfo["paused"] = 0;
     } else {
         player.pauseVideo();
+        $('.pause-button').addClass('selected-button')
         playerInfo["paused"] = 1;
     }
 });
@@ -139,9 +144,11 @@ $('.mute-button').click(function() {
     console.log(player);
     if (playerInfo["muted"]) {
         player.unMute();
+        $('.mute-button').removeClass('selected-button')
         playerInfo["muted"] = 0;
     } else {
         player.mute();
+        $('.mute-button').addClass('selected-button')
         playerInfo["muted"] = 1;
     }
 });
@@ -182,8 +189,10 @@ $('.search-results').on("click", '.result', function() {
 
 function displayAnswer(status) {
     if (!$('.answer').length) {
+        //possibly also pause video
         game.answer.find('.status').text(status);
         $('body').append(game.answer);
+        clearInterval(interval);
         $('.main').append(`<div class="123 blur"></div>`);
     }
 }

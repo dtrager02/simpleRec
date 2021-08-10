@@ -147,7 +147,6 @@ body {
     margin: 0 auto;
     background: none;
     border: 4px solid grey;
-    margin-right: 10px;
 }
 
 .timer p {
@@ -173,7 +172,7 @@ body {
     justify-content: center;
     align-items: center;
     transition: background-color 1s ease-in;
-    background-color: rgb(255, 255, 255, .5);
+    background-color: rgba(255, 255, 255, 0.822);
 }
 
 .answer img {
@@ -189,14 +188,6 @@ body {
     border-radius: 4px;
     padding: 5px 5px 5px 5px;
     text-align: center;
-}
-
-.input-guess {
-    margin-top: 10px;
-    width: 500px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-between;
 }
 
 .input-guess input {
@@ -220,14 +211,44 @@ body {
     line-height: 1.4em;
 }
 
+.input-guess-center {
+    height: 39px;
+    display: flex;
+    align-items: center;
+}
+
+.input-guess {
+    position: relative;
+    margin-top: 10px;
+    width: 500px;
+    display: inline-flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    height: fit-content;
+}
+
+@media only screen and (max-width: 502px) {
+    .input-guess {
+        width: 300px;
+    }
+    .input-guess p,
+    .input-guess input {
+        width: 100px;
+    }
+    .search-boxes {
+        width: 110px;
+    }
+}
+
 textarea:focus,
 .input-guess input:focus {
     box-shadow: 0px 0px 5px rgb(175, 175, 175);
     outline: none;
 }
 
-.input-guess div:hover {
+.input-guess .result:hover {
     background-color: rgb(221, 221, 221);
+    cursor: pointer;
 }
 
 .blur {
@@ -242,4 +263,16 @@ textarea:focus,
     -moz-filter: blur(5px);
     -o-filter: blur(5px);
     -ms-filter: blur(5px); */
+}
+
+.selected-button {
+    background-color: rgb(195, 195, 195);
+    border: 1px solid gray;
+}
+
+.pause-button:hover,
+.mute-button:hover {
+    cursor: pointer;
+    background-color: rgb(170, 170, 170);
+    transition: all .3s;
 }

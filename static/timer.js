@@ -103,7 +103,7 @@ function updateScreen() {
         $('.song-title').text(temp[3]);
         //makes assumption that player wants next song to play instantly
         player.loadVideoById(temp[2]);
-        $('.round-num').text("Round: " + game.round);
+        $('.round-num').text("Round: " + game.round + 1);
         $('.points').text("Points: " + game.points);
     } else {
         $('.main').append(`<h1>Congratulations! You have earned ${game.points} points in ${game.round} rounds!</h1>`)

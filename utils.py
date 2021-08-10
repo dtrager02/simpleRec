@@ -4,6 +4,12 @@ import itertools
 
 # con = sqlite3.connect('../animeInfo.sqlite3')
 # cur = con.cursor()
+def RepresentsInt(s):
+    try: 
+        int(s)
+        return True
+    except ValueError:
+        return False
 
 def getAnimeQuery(num, diff):
     if diff == "easy":
