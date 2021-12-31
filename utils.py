@@ -1,55 +1,28 @@
-import sqlite3
-import random
-import itertools
+from google.cloud import bigquery
+import pandas as pd
+# returns table of recommendations
 
-# con = sqlite3.connect('../animeInfo.sqlite3')
-# cur = con.cursor()
-def RepresentsInt(s):
-    try: 
-        int(s)
-        return True
-    except ValueError:
-        return False
+def getRecs(client:bigquery.Client,search:str):
+    search = search.replace("%20"," ").replace("+"," ")
+    job_config = bigquery.QueryJobConfig(
+        query_parameters=[
+            bigquery.ScalarQueryParameter(None, "STRING", search)
+        ]
 
-def getAnimeQuery(num, diff):
-    if diff == "easy":
-        return f"select anime_title,image_url,opening_song_ids,opening_titles,english_title from anime_info where occurances > 50000 and opening_song_ids not null order by random() limit {num}"
-    elif diff == "medium":
-        return f"select anime_title,image_url,opening_song_ids,opening_titles,english_title  from anime_info where occurances > 18000 and opening_song_ids not null order by random() limit {num}"
-    else:
-        return f"select anime_title,image_url,opening_song_ids,opening_titles,english_title from anime_info where occurances < 18000 and occurances > 2000 and opening_song_ids not null order by random() limit {num}"
-
-def flatten_lists(the_lists):
-    result = []
-    for _list in the_lists:
-        result += _list
-    return result
-
-def select(w,x,y,z,a):
-    """
-    w=anime_title
-    x=image_url
-    y=opening_song_ids
-    z=opening_titles
-    """
-    links = y.split('||')
-    titles = z.split('||')
-    choice = random.randint(0,len(links)-1)
-    return (w,x,links[choice].replace('/watch?v=',''),titles[choice].replace('/watch?v=',''),a)
-
-def queryProcessing(cur, num, diff):
-    items = cur.execute(getAnimeQuery(num,diff)).fetchall()
-    #processes query using select function which shortens youtube vidio IDs and picks random videos from sets
-    return list(itertools.starmap(select,items)) 
-
-def autocomplete(cur,string):
-    titles = cur.execute("select a1.anime_title,a2.english_title from anime_info a1 left join anime_info a2 on a1.id = a2.id where a1.anime_title like ? or a2.english_title like ?",("%"+string+ "%","%"+string+"%")).fetchall()
-    check = lambda x: (x[0],) if x[0]==x[1] else x
-    #print(titles[:5])
-    titles = list(map(check,titles))
-    print(titles[:5])
-    titlesSingle = itertools.chain.from_iterable(titles)
-    
-    #print({'data':list(titlesSingle)[:5]})
-    return {'data':list(titlesSingle)[:5]}
-    #return {'data':["a","b","c"]}
+    )
+    getId = client.query("select id from `heroic-throne-301401.animeDB2.anime_info1` order by animeDB2.levenshtein('?',anime_title) limit 1;",  job_config=job_config).result()
+    input = list(getId)[0][0]
+    print(input)
+    # Start the query, passing in the extra configuration.
+    query_job = client.query(
+        f"""
+    select c,anime_title,image_url,score from
+    (select corr(u.score,f.score) c, f.anime_id id2 from 
+    (select * from animeDB2.user_records3 where anime_id = {input}) u inner join `heroic-throne-301401.animeDB2.user_records2` f
+     on u.username = f.username group by id2 having count(id2)>10000) inner join `heroic-throne-301401.animeDB2.anime_info1` on id2 = id  order by c    desc; 
+    """  )  # Make an API request.
+    result = query_job.result()
+    df = result.to_dataframe()
+    table = df.to_html()
+    table['image_url'] = table['image_url'].apply(lambda x: f'<img src="{x}">')
+    return df.to_html()

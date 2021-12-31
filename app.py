@@ -1,56 +1,20 @@
+from google.cloud import bigquery
 from flask import Flask, session, render_template, Response, request, redirect
-from flask_cors import CORS, cross_origin
-from datetime import timedelta
-import sqlite3
-import random
-import itertools
-import utils
+import pandas as pd
+from utils import getRecs
 statDir = './static/'
 templateDir = './templates/'
 # initialize a flask object
 app = Flask(__name__,static_folder=statDir,
             template_folder=templateDir)
 
-app.config['SECRET_KEY'] = 'abcd12345'
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=365)
+client = bigquery.Client()
 
-@app.route('/')
-def index():
-    return render_template("home.html")
-
-@app.route("/start",methods =['POST','GET'])
-def start():
-    if request.method == 'POST':
-        con = sqlite3.connect('./animeInfo.sqlite3')
-        cur = con.cursor()
-        print(request.form['diff'] + " " + request.form['num'])
-        if not(request.form['diff'] in {"easy","medium","hard"}) or not utils.RepresentsInt(request.form['num']):
-            print("bad form")
-            print(type(request.form['num']) is int)
-            return redirect('/')
-        session['game_data'] = utils.queryProcessing(cur,request.form['num'],request.form['diff'])
-        session.modified = True
-        print(session.get('game_data'))
-        return render_template('game.html')
-    else:
-        return {'data':session.get('game_data')}
-
-@app.route("/roundData",methods=["GET","POST"])
-def roundData():
-    if request.method == 'POST':
-        pass
-
-@app.route("/autocomplete/<term>")
-def autocomplete(term):
-    con = sqlite3.connect('./animeInfo.sqlite3')
-    cur = con.cursor()
-    return utils.autocomplete(cur,term)
-    
-@app.route("/highScore/<int:score>")
-def highScore(score):
-    if score > session.get('highScore',0):
-        session['highScore'] = 0
-    return session.get('highScore',0)
+@app.route('/<str:input>')
+def index(input):
+    global client
+    table = getRecs(client,input)
+    return render_template("test.html",table=table)
 
 @app.after_request
 def after_request(response):
